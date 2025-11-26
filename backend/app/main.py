@@ -75,18 +75,26 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
     )
     
-    # Configure CORS - allow all origins in development
+    # Configure CORS - allow all origins if configured or in development
     origins = settings.cors_origins
-    if settings.environment == "development":
+    if settings.environment == "development" or "*" in origins:
         origins = ["*"]
-    
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+        # When using "*", credentials must be False
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=origins,
+            allow_credentials=False,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
+    else:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=origins,
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
     
     # Include routers
     app.include_router(rooms_router, prefix="/api")

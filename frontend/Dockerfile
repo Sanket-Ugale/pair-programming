@@ -33,7 +33,9 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Create a script to replace environment variables at runtime
 RUN echo '#!/bin/sh' > /docker-entrypoint.d/40-envsubst-config.sh && \
-    echo 'envsubst < /usr/share/nginx/html/config.template.js > /usr/share/nginx/html/config.js' >> /docker-entrypoint.d/40-envsubst-config.sh && \
+    echo 'if [ -f /usr/share/nginx/html/config.template.js ]; then' >> /docker-entrypoint.d/40-envsubst-config.sh && \
+    echo '  envsubst < /usr/share/nginx/html/config.template.js > /usr/share/nginx/html/config.js' >> /docker-entrypoint.d/40-envsubst-config.sh && \
+    echo 'fi' >> /docker-entrypoint.d/40-envsubst-config.sh && \
     chmod +x /docker-entrypoint.d/40-envsubst-config.sh
 
 # Expose port (will be overridden)

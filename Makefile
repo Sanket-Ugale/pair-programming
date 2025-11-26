@@ -2,8 +2,8 @@
 
 # Default ports (random non-default)
 POSTGRES_PORT ?= 5433
-REDIS_PORT ?= 6380
-BACKEND_PORT ?= 8080
+REDIS_PORT ?= 6388
+BACKEND_PORT ?= 8081
 FRONTEND_PORT ?= 3080
 
 help: ## Show this help message

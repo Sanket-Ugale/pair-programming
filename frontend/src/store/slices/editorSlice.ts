@@ -14,6 +14,23 @@ import {
   generateUsername,
 } from '../../types';
 
+// Fallback UUID generator for non-secure contexts (HTTP)
+const generateUUID = (): string => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    try {
+      return crypto.randomUUID();
+    } catch {
+      // Fall through to fallback
+    }
+  }
+  // Fallback implementation
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
 // Get or create persistent user identity
 const getStoredUsername = (): string => {
   const stored = localStorage.getItem('pairprog_username');
@@ -26,7 +43,7 @@ const getStoredUsername = (): string => {
 const getStoredUserId = (): string => {
   const stored = localStorage.getItem('pairprog_userId');
   if (stored) return stored;
-  const newId = crypto.randomUUID().slice(0, 8);
+  const newId = generateUUID().slice(0, 8);
   localStorage.setItem('pairprog_userId', newId);
   return newId;
 };
@@ -208,7 +225,7 @@ const editorSlice = createSlice({
       // Add system message
       if (userId !== state.userId) {
         state.chatMessages.push({
-          id: crypto.randomUUID(),
+          id: generateUUID(),
           userId: 'system',
           username: 'System',
           content: `${username} joined the room`,
@@ -226,7 +243,7 @@ const editorSlice = createSlice({
       
       // Add system message
       state.chatMessages.push({
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         userId: 'system',
         username: 'System',
         content: `${username || userId} left the room`,
@@ -271,7 +288,7 @@ const editorSlice = createSlice({
       
       if (userId !== state.userId) {
         state.chatMessages.push({
-          id: crypto.randomUUID(),
+          id: generateUUID(),
           userId: 'system',
           username: 'System',
           content: `${username} changed language to ${language}`,
