@@ -26,9 +26,18 @@ import {
   TypingPayload,
   ChatMessage,
 } from '../types';
+import { getWsBaseUrl } from '../services/api';
 
-// Use localhost:8000 directly for WebSocket to avoid proxy issues
-const WS_BASE_URL = 'ws://localhost:8000/ws';
+// Get WebSocket URL dynamically
+const getWebSocketUrl = (): string => {
+  // For development, use localhost:8000 directly
+  if (import.meta.env.DEV && !import.meta.env.VITE_WS_URL) {
+    return 'ws://localhost:8000/ws';
+  }
+  return getWsBaseUrl();
+};
+
+const WS_BASE_URL = getWebSocketUrl();
 
 export const useWebSocket = (roomId: string | null) => {
   const dispatch = useDispatch<AppDispatch>();

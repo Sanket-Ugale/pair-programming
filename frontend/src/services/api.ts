@@ -1,6 +1,26 @@
 import { Room, CreateRoomRequest, AutocompleteRequest, AutocompleteResponse, ExecutionRequest, ExecutionResult } from '../types';
 
-const API_BASE_URL = '/api';
+// Get API URL from environment or use relative path
+const getApiBaseUrl = (): string => {
+  // Check for Vite environment variable
+  if (import.meta.env.VITE_API_URL) {
+    return `${import.meta.env.VITE_API_URL}/api`;
+  }
+  // Use relative path (works with proxy or same-origin)
+  return '/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Export for WebSocket URL construction
+export const getWsBaseUrl = (): string => {
+  if (import.meta.env.VITE_WS_URL) {
+    return `${import.meta.env.VITE_WS_URL.replace('http', 'ws')}/ws`;
+  }
+  // Construct from window location
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  return `${protocol}//${window.location.host}/ws`;
+};
 
 class ApiService {
   private async request<T>(

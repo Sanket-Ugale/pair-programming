@@ -2,18 +2,17 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 from sqlalchemy.orm import DeclarativeBase
 from app.config import settings
 
-# Create async engine based on database URL type
+# Create async engine with PostgreSQL settings
 engine_kwargs = {
     "echo": settings.debug,
+    "pool_pre_ping": True,
+    "pool_size": 10,
+    "max_overflow": 20,
 }
-
-# SQLite doesn't support pool_pre_ping
-if not settings.database_url.startswith("sqlite"):
-    engine_kwargs["pool_pre_ping"] = True
 
 # Create async engine
 engine = create_async_engine(
-    settings.database_url,
+    settings.async_database_url,
     **engine_kwargs,
 )
 

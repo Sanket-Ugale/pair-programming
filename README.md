@@ -391,11 +391,3 @@ curl -X POST http://localhost:8000/api/autocomplete \
 npm install -g wscat
 wscat -c ws://localhost:8000/ws/<room_id>
 ```
-
-## 📄 License
-
-MIT License
-
-## 👤 Author
-
-Built as a prototype for Tredence Full-Stack Developer Assessment.
