@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #1a1a1a;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3c3c3c;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Monaco Editor custom styles */
+.monaco-editor {
+  border-radius: 0 0 8px 8px;
+}
+
+/* Autocomplete suggestion overlay */
+.autocomplete-suggestion {
+  position: absolute;
+  background: rgba(30, 30, 30, 0.95);
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  color: #9cdcfe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 400px;
+  white-space: pre-wrap;
+}
+
+.autocomplete-suggestion::before {
+  content: '💡 ';
+}
+
+/* User cursor styles */
+.remote-cursor {
+  position: absolute;
+  width: 2px;
+  height: 18px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Button styles */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+}
+
+/* Card styles */
+.card {
+  @apply bg-editor-sidebar border border-editor-border rounded-lg p-6;
+}
+
+/* Status indicator */
+.status-indicator {
+  @apply w-2 h-2 rounded-full;
+}
+
+.status-indicator.connected {
+  @apply bg-green-500;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.disconnected {
+  @apply bg-red-500;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
